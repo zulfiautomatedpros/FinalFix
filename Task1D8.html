@@ -1,593 +1,331 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>OTP Confirmation</title>
-  <!-- DM Sans Font -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
-  <!-- Tailwind CSS (Replace with your own compiled output.css) -->
-  <link href="./output.css" rel="stylesheet" />
-  <!-- Additional utilities for pseudo-element styling (optional) -->
-  <style>
-    @layer utilities {
-      .before-notification::before {
-        content: '';
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        right: 4px;
-        top: 2px;
-        background: #E10E0E;
-        border: 2px solid #FFF;
-        border-radius: 50%;
-        z-index: 10;
-      }
-      .notification-frame {
-        position: relative;
-        width: 48px;
-        height: 48px;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 48px;
-        text-align: center;
-        padding-top: 10px;
-      }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS v4.0.12 -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['DM Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            red: {
+              500: 'rgba(255,86,52,1)',
+            },
+            gray: {
+              100: '#f7fafc',
+              300: '#e2e8f0',
+              800: '#2d3748',
+            },
+            black: '#000',
+            white: '#fff',
+            custom: {
+              bg2: 'rgba(225,14,14,1)',
+              bg3: 'rgba(255,86,52,1)',
+            },
+          },
+          borderRadius: {
+            '2xl': '1rem',
+            'custom': '24px',
+          },
+          backgroundImage: {
+            'background1': "linear-gradient(67.75deg, #FFFFFF 19.18%, #FFEBE7 75.31%)",
+          },
+        },
+      },
     }
-    
-  /*<style> Additional mobile fixes */
-  @media (max-width: 480px) {
-    .main-container {
-      flex-direction: column;
-      padding: 0 16px;
-    }
-    
-    .left-sidebar, .right-panel {
-      width: auto !important;
-      height: auto !important;
-      
-    }
-    
-    .right-panel {
-      border-left: none;
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-    }
-  }
-
-  </style>
+  </script>
 </head>
-<body class="font-sans bg-gradient-to-r from-white to-[#FFEBE7] min-h-screen text-black">
 
- 
-  <header
-    class="sticky top-0 z-[900] py-2 px-4  flex justify-between items-center bg-gradient-to-r from-white to-[#FFEBE7] max-[480px]:static max-[480px]:ml-0"
-  >
-    <div class="header-left flex items-center gap-2">
-      <!-- Page Title -->
-      <h1 class="font-bold text-[32px] ml-24 leading-10 tracking-[-0.03em]">
-        OTP Confirmation
-      </h1>
-    </div>
-    <!-- Fullscreen button from your sample -->
-    <div
-      class="fullscreen-frame flex items-center pl-3 pr-4 py-2 gap-1 w-[124px] h-12 border border-black/10 rounded-full cursor-pointer"
-    >
-      <div class="fullscreen-icon w-5 h-5 pr-1 flex items-center">
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 10V5H1.5V8.5H5V10H0ZM8.5 5V1.5H5V0H10V5H8.5Z"
-            fill="black"
-          />
-        </svg>
+<body class="font-sans bg-background1 min-h-screen w-full max-w-[100vw] overflow-x-hidden flex flex-col">
+  <div class="flex h-full flex-col lg:flex-row">
+    <!-- Sidebar -->
+    <div class="lg:w-auto md:w-full w-[95%] lg:left-0 top-1 lg:h-screen h-17 justify-between rounded-full bg-white lg:bg-none flex px-4 py-2 items-center mt-6 lg:max-h-screen lg:overflow-hidden overflow-visible lg:ml-0 ml-auto lg:flex-col sm:flex-row flex-row space-y-4 lg:space-y-auto lg:fixed sticky z-20 duration-300">
+      <div class="bg-white h-16 w-16 text-2xl font-bold rounded-full flex items-center justify-center">
+        <img src="orderific.png" alt="brandLogo" class="w-8 h-8 object-contain">
       </div>
-      <p class="fullscreen-text font-bold text-[14px] text-black whitespace-nowrap">
-        FullScreen
-      </p>
-    </div>
-    
-  </header>
-
-  <aside
-    class="navigation-v2 fixed top-0 left-0 w-24 h-screen p-4 flex flex-col gap-4 z-[999]
-           max-[480px]:static max-[480px]:w-full max-[480px]:h-auto max-[480px]:p-2
-           max-[480px]:flex-row max-[480px]:items-center max-[480px]:justify-between max-[480px]:bg-white "
-  >
-    <!-- Logo at the top -->
-    <div
-      class="logo-frame flex items-center justify-center py-2 max-[480px]:order-1 max-[480px]:mr-auto"
-    >
-      <img
-        class="orderific-logo w-10 h-10 object-cover"
-        src="orderific.png"
-        alt="Orderific Logo"
-      />
-    </div>
-
-    <!-- Main menu (icons) -->
-    <div
-      class="main-menu-v2 flex flex-col items-center gap-2 bg-black rounded-[48px] p-2 mt-2 flex-shrink-0 max-[480px]:fixed max-[480px]:bottom-4 max-[480px]:left-1/2 max-[480px]:-translate-x-1/2 max-[480px]:flex-row max-[480px]:justify-around max-[480px]:items-center max-[480px]:py-[8px] max-[480px]:px-[10px]"
-    >
-      <!-- Example icons -->
-      <div
-        class="menu-item flex justify-center items-center w-12 h-12 bg-white/20 rounded-full
-               hover:bg-white/40 transition-colors duration-300 ease max-[480px]:bg-transparent"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M7.20835 9.79195H12.7916V8.70866H7.20835V9.79195ZM7.20835 6.79195H12.7916V5.70866H7.20835V6.79195ZM15.5464 16.5259L12.8695 13.0087C12.6798 12.7542 12.4449 12.5572 12.1649 12.4178C11.8849 12.2784 11.5799 12.2087 11.25 12.2087H4.41669V3.75674C4.41669 3.38163 4.54628 3.06456 4.80548 2.80553C5.06467 2.54651 5.38194 2.41699 5.75727 2.41699H14.2495C14.6248 2.41699 14.941 2.54651 15.1979 2.80553C15.4548 3.06456 15.5833 3.38163 15.5833 3.75674V16.2439C15.5833 16.2939 15.582 16.3429 15.5793 16.3911C15.5766 16.4393 15.5657 16.4843 15.5464 16.5259ZM5.75644 17.5836C5.38133 17.5836 5.06426 17.4541 4.80523 17.1951C4.5462 16.936 4.41669 16.619 4.41669 16.2439V13.292H11.25C11.3932 13.292 11.5337 13.3229 11.6715 13.3849C11.8093 13.4469 11.9261 13.5412 12.022 13.6679L14.8798 17.4243C14.7943 17.4707 14.6955 17.5088 14.5835 17.5387C14.4714 17.5687 14.3581 17.5836 14.2436 17.5836H5.75644Z"
-            fill="white"
-          />
-        </svg>
+      <div class="w-auto h-auto gap-2 p-2 rounded-full bg-black text-white hidden lg:flex flex-col space-y-4 p-3">
+        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">
+          <img src="1st.png" alt="menuItem">
+        </div>
+        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">
+          <img src="table.png" alt="menuItem">
+        </div>
+        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">
+          <img src="active.png" alt="menuItem">
+        </div>
+        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">
+          <img src="graph.png" alt="menuItem">
+        </div>
+        <div class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center">
+          <img src="read.png" alt="menuItem">
+        </div>
+        <div class="w-10 h-10 bg-custom-bg3 rounded-full relative flex items-center justify-center">
+          <img src="exit.png" alt="menuItem">
+          <span class="absolute -top-1 -right-1 bg-custom-bg2 text-white w-4 h-4 min-w-4 gap-0 rounded-full pt-0 pr-1 pb-0 pl-1 border-2 border-black text-xs flex items-center justify-center">1</span>
+        </div>
       </div>
-      <div
-      class="menu-item flex justify-center items-center w-12 h-12 bg-white/20 rounded-full
-             hover:bg-white/40 transition-colors duration-300 ease max-[480px]:bg-transparent"
-    >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M7.20835 9.79195H12.7916V8.70866H7.20835V9.79195ZM7.20835 6.79195H12.7916V5.70866H7.20835V6.79195ZM15.5464 16.5259L12.8695 13.0087C12.6798 12.7542 12.4449 12.5572 12.1649 12.4178C11.8849 12.2784 11.5799 12.2087 11.25 12.2087H4.41669V3.75674C4.41669 3.38163 4.54628 3.06456 4.80548 2.80553C5.06467 2.54651 5.38194 2.41699 5.75727 2.41699H14.2495C14.6248 2.41699 14.941 2.54651 15.1979 2.80553C15.4548 3.06456 15.5833 3.38163 15.5833 3.75674V16.2439C15.5833 16.2939 15.582 16.3429 15.5793 16.3911C15.5766 16.4393 15.5657 16.4843 15.5464 16.5259ZM5.75644 17.5836C5.38133 17.5836 5.06426 17.4541 4.80523 17.1951C4.5462 16.936 4.41669 16.619 4.41669 16.2439V13.292H11.25C11.3932 13.292 11.5337 13.3229 11.6715 13.3849C11.8093 13.4469 11.9261 13.5412 12.022 13.6679L14.8798 17.4243C14.7943 17.4707 14.6955 17.5088 14.5835 17.5387C14.4714 17.5687 14.3581 17.5836 14.2436 17.5836H5.75644Z"
-          fill="white"
-        />
-      </svg>
-    </div>
-      <div
-        class="menu-item flex justify-center items-center w-12 h-12 bg-white/20 rounded-full
-               hover:bg-white/40 transition-colors duration-300 ease max-[480px]:bg-transparent"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M5.30451 15.5909L6.49041 13.1134C6.57481 12.9157 6.70862 12.7653 6.89185 12.6622C7.07507 12.5591 7.26978 12.5076 7.47597 12.5076H9.45837V8.67904C7.51499 8.62563 5.88626 8.39566 4.57216 7.98915C3.25806 7.58263 2.60101 7.08611 2.60101 6.49958C2.60101 5.84894 3.31735 5.32437 4.75003 4.92587C6.18273 4.52737 7.93272 4.32812 10 4.32812C12.062 4.32812 13.8106 4.52737 15.246 4.92587C16.6813 5.32437 17.399 5.84894 17.399 6.49958C17.399 7.09146 16.7372 7.58932 15.4134 7.99317C14.0897 8.397 12.4658 8.62563 10.5417 8.67904V12.5076H12.5241C12.7356 12.5076 12.9316 12.5591 13.1122 12.6622C13.2927 12.7653 13.4252 12.9157 13.5096 13.1134L14.6955 15.5909H13.5962L12.5962 13.5909H7.40385L6.40385 15.5909H5.30451Z"
-            fill="white"
-          />
-        </svg>
-      </div>
-      <div
-        class="menu-item flex justify-center items-center w-12 h-12 bg-white/20 rounded-full
-               hover:bg-white/40 transition-colors duration-300 ease max-[480px]:bg-transparent"
-      >
-        <!-- Another icon -->
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M5.30451 15.5909L6.49041 13.1134C6.57481 12.9157 6.70862 12.7653 6.89185 12.6622C7.07507 12.5591 7.26978 12.5076 7.47597 12.5076H9.45837V8.67904C7.51499 8.62563 5.88626 8.39566 4.57216 7.98915C3.25806 7.58263 2.60101 7.08611 2.60101 6.49958C2.60101 5.84894 3.31735 5.32437 4.75003 4.92587C6.18273 4.52737 7.93272 4.32812 10 4.32812C12.062 4.32812 13.8106 4.52737 15.246 4.92587C16.6813 5.32437 17.399 5.84894 17.399 6.49958C17.399 7.09146 16.7372 7.58932 15.4134 7.99317C14.0897 8.397 12.4658 8.62563 10.5417 8.67904V12.5076H12.5241C12.7356 12.5076 12.9316 12.5591 13.1122 12.6622C13.2927 12.7653 13.4252 12.9157 13.5096 13.1134L14.6955 15.5909H13.5962L12.5962 13.5909H7.40385L6.40385 15.5909H5.30451Z"
-            fill="white"
-          />
-        </svg>
-      </div>
-      <!-- Active Menu Item -->
-      <div
-        class="menu-item flex justify-center items-center w-12 h-12 bg-white/20 rounded-full
-        hover:bg-white/40 transition-colors duration-300 ease max-[480px]:bg-transparent"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M5.30451 15.5909L6.49041 13.1134C6.57481 12.9157 6.70862 12.7653 6.89185 12.6622C7.07507 12.5591 7.26978 12.5076 7.47597 12.5076H9.45837V8.67904C7.51499 8.62563 5.88626 8.39566 4.57216 7.98915C3.25806 7.58263 2.60101 7.08611 2.60101 6.49958C2.60101 5.84894 3.31735 5.32437 4.75003 4.92587C6.18273 4.52737 7.93272 4.32812 10 4.32812C12.062 4.32812 13.8106 4.52737 15.246 4.92587C16.6813 5.32437 17.399 5.84894 17.399 6.49958C17.399 7.09146 16.7372 7.58932 15.4134 7.99317C14.0897 8.397 12.4658 8.62563 10.5417 8.67904V12.5076H12.5241C12.7356 12.5076 12.9316 12.5591 13.1122 12.6622C13.2927 12.7653 13.4252 12.9157 13.5096 13.1134L14.6955 15.5909H13.5962L12.5962 13.5909H7.40385L6.40385 15.5909H5.30451Z"
-            fill="white"
-          />
-        </svg>
-      </div>
-      <div
-        class="menu-item active flex justify-center items-center w-12 h-12 bg-[#FF5634] rounded-full
-        hover:bg-white/40 transition-colors duration-300 ease max-[480px]:bg-transparent"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 14V7.75C12 7.5375 12.0719 7.35938 12.2156 7.21562C12.3594 7.07187 12.5375 7 12.75 7H18.25C18.4625 7 18.6406 7.07187 18.7844 7.21562C18.9281 7.35938 19 7.5375 19 7.75V11.75C19 11.9625 18.9281 12.1406 18.7844 12.2844C18.6406 12.4281 18.4625 12.5 18.25 12.5H13.5L12 14ZM5.5 19C5.0875 19 4.73437 18.8531 4.44062 18.5594C4.14687 18.2656 4 17.9125 4 17.5V2.5C4 2.0875 4.14687 1.73438 4.44062 1.44063C4.73437 1.14688 5.0875 1 5.5 1H14.5C14.9125 1 15.2656 1.14688 15.5594 1.44063C15.8531 1.73438 16 2.0875 16 2.5V6H14.5V5H5.5V15H14.5V14H16V17.5C16 17.9125 15.8531 18.2656 15.5594 18.5594C15.2656 18.8531 14.9125 19 14.5 19H5.5Z"
-            fill="white"
-          />
-        </svg>
+      <div class="gap-2 p-2 rounded-full flex lg:flex-col flex-row lg:mb-5">
+        <div class="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
+          <img src="profile.png" alt="profile" class="w-full h-full object-cover">
+        </div>
+        <div class="w-12 h-12 bg-black/10 rounded-full relative flex items-center justify-center">
+          <img src="Notificationicon.png" alt="Notification">
+          <span class="absolute -top-1 -right-0 bg-custom-bg2 text-white text-xs border-2 w-4 h-4 flex items-center justify-center rounded-full"></span>
+        </div>
       </div>
     </div>
 
-    <!-- Profile & Notification (desktop only) -->
-    <div
-      class="other-links mt-auto flex flex-col items-start gap-2 bg-white rounded-[48px] p-2
-             max-[480px]:order-2 max-[480px]:ml-auto max-[480px]:flex-row max-[480px]:items-center max-[480px]:gap-2"
-    >
-      <!-- Profile image -->
-      <div
-        class="profile-frame w-12 h-12 bg-[url('profile.png')] bg-center bg-cover rounded-full"
-      ></div>
-      <!-- Notification with red dot -->
-      <div
-        class="notification-frame before-notification relative w-12 h-12 bg-black/10 rounded-full flex justify-center pt-[10px]"
-      >
-        <svg
-          width="12"
-          height="16"
-          viewBox="0 0 12 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0.416687 13.4041V12.3208H1.25644V6.9362C1.25644 5.75992 1.62662 4.73081 2.367 3.84887C3.10739 2.96692 4.05451 2.43354 5.20835 2.24872V1.20866C5.20835 0.988756 5.28523 0.80184 5.43898 0.64791C5.59273 0.493965 5.77942 0.416992 5.99906 0.416992C6.2187 0.416992 6.40571 0.493965 6.56008 0.64791C6.71446 0.80184 6.79165 0.988756 6.79165 1.20866V2.24872C7.94549 2.43354 8.89261 2.96692 9.633 3.84887C10.3734 4.73081 10.7436 5.75992 10.7436 6.9362V12.3208H11.5833V13.4041H0.416687ZM5.99417 15.7439C5.62412 15.7439 5.3093 15.6127 5.04969 15.3503C4.79008 15.088 4.66027 14.7726 4.66027 14.4041H7.33973C7.33973 14.7781 7.20798 15.0948 6.94448 15.3545C6.68096 15.6141 6.36419 15.7439 5.99417 15.7439Z"
-            fill="black"
-          />
-        </svg>
+    <!-- Main Content -->
+    <div class="flex flex-grow flex-col h-full lg:ml-20">
+      <!-- Pending Transactions -->
+      <div id="mainHeader" class="h-full w-full pt-[16px] md:pt-[24px] pr-[16px] md:pb-[24px] pb-[16px] pl-[16px] lg:top-0 top-16 sticky block z-11 bg-transparent transition-colors duration-300">
+        <h2
+          class="font-bold md:text-[32px] text-[24px] leading-[40px] tracking-[3%] font-sans text-center md:text-left ">
+          OTP Confirmation
+        </h2>
       </div>
-    </div>
-  </aside>
-
-  <main
-    class="main-container flex flex-wrap ml-24
-    max-[480px]:flex-nowrap max-[480px]:justify-between
-    max-[480px]:ml-0 max-[480px]:w-full max-[480px]:px-0"
-  >
-    <!-- Header Row Inside Main (Matches your "Header" specs) -->
-    <div
-      class="flex flex-row items-center py-2  px-4 gap-[282px] isolate
-             w-full 
-             max-[480px]:flex-wrap max-[480px]:gap-4"
-    >
-      
-     
-
-      
-      <div class="hidden flex-row items-center gap-2 w-12 h-12">
-       
-      </div>
-
-     
-      <div
-        class="hidden absolute flex-row items-start gap-4
-               w-[203px] h-12 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-      >
-      
-      </div>
-
-    
-    
-    </div>
-
-    <!-- MAIN BODY FRAME (Frame 1000006812) -->
-    <div
-      class="flex flex-row items-start p-0 w-full h-[722px] rounded-[24px]
-             max-[480px]:flex-col"
-    >
-      <!-- LEFT SIDEBAR (Messages) -->
-      <div
-        class="flex flex-col items-start py-4 gap-6 w-[320px] h-[722px]
-               bg-white/60 rounded-none
-               flex-none "
-      >
-        <!-- Title row -->
-        <div
-          class="flex flex-row items-center px-4 gap-4 w-[320px] h-12
-                 flex-none"
-        >
-          <!-- Title & Label -->
-          <div class="flex flex-row items-center gap-2 w-[224px] h-6 flex-grow">
-            <span
-              class="text-[20px] leading-6 font-medium tracking-[-0.01em]
-                     text-black"
-            >
+      <div class="h-screen gap-0 rounded-custom pr-0 flex flex-col md:flex-row min-h-screen ml-2 mr-2 mx-auto">
+        <!-- Sidebar (Sticky on Left) -->
+        <div class="w-full md:w-[320px] h-screen md:h-[100vh] gap-6 pt-7 pr-0 pb-1 pl-0 bg-white/60 sticky z-10">
+          <!-- Header with Pending and Search -->
+          <div class="flex justify-between w-full md:w-[320px] h-12 gap-4 px-4" id="headerSection">
+            <h3 class="font-semibold flex items-center gap-2 text-[20px]">
               Pending
-            </span>
-            <!-- Card Indicator -->
-            <div
-              class="flex flex-col justify-center items-center px-1 w-4 h-4
-                     bg-black rounded-full"
-            >
-              <span
-                class="text-[13px] leading-4 font-bold text-white text-align justify-center"
-              >
-                1
-              </span>
+              <span class="bg-black text-white text-xs w-6 h-6 flex items-center justify-center rounded-full">1</span>
+            </h3>
+            <div class="w-[48px] h-[48px] border border-black/5 rounded-full flex items-center justify-center hidden md:flex cursor-pointer" id="searchBtn">
+              <img src="search.png" alt="search" class="w-4.5 h-4.5">
             </div>
           </div>
-          <!-- Right section (Search) -->
-          <div
-            class="flex flex-row items-center gap-2 w-12 h-12 flex-none"
-          >
-            <!-- Search Button -->
-            <button
-              class="flex justify-center items-center w-12 h-12
-                     border border-black/10 rounded-full"
-            >
-              <!-- Icon -->
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M16.6 18L10.3 11.7C9.8 12.1 9.225 12.4167 8.575 12.65C7.925 12.8833 7.23333 13 6.5 13C4.68333 13 3.14583 12.3708 1.8875 11.1125C0.629167 9.85417 0 8.31667 0 6.5C0 4.68333 0.629167 3.14583 1.8875 1.8875C3.14583 0.629167 4.68333 0 6.5 0C8.31667 0 9.85417 0.629167 11.1125 1.8875C12.3708 3.14583 13 4.68333 13 6.5C13 7.23333 12.8833 7.925 12.65 8.575C12.4167 9.225 12.1 9.8 11.7 10.3L18 16.6L16.6 18ZM6.5 11C7.75 11 8.8125 10.5625 9.6875 9.6875C10.5625 8.8125 11 7.75 11 6.5C11 5.25 10.5625 4.1875 9.6875 3.3125C8.8125 2.4375 7.75 2 6.5 2C5.25 2 4.1875 2.4375 3.3125 3.3125C2.4375 4.1875 2 5.25 2 6.5C2 7.75 2.4375 8.8125 3.3125 9.6875C4.1875 10.5625 5.25 11 6.5 11Z" fill="black"/>
-                </svg>
-                
-            </button>
+          <!-- Search Overlay (replaces headerSection when active) -->
+          <div class="w-full md:w-[320px] h-12 gap-4 px-4 hidden" id="searchOverlay">
+            <div class="bg-white rounded-full shadow-lg p-2 flex items-center w-full h-full">
+              <input type="text" placeholder="Search..." class="w-full p-2 rounded-full border-none focus:outline-none">
+              <button class="ml-2 text-black/60 hover:text-black text-2xl font-bold cursor-pointer" id="searchCloseBtn">×</button>
+            </div>
+          </div>
+          <!-- Scrollable List -->
+          <div class="w-full md:w-[320px] h-[calc(100%-3rem)] mt-6 overflow-y-auto overflow-x-hidden border-r border-black/10">
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <div class="w-full gap-2 px-4 py-3 border-b border-black/10 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+              <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gray-300 rounded-full overflow-hidden flex-shrink-0">
+                  <img src="profile.png" alt="users" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="font-medium truncate">Nasser Alsubai</p>
+                  <p class="text-[13px] text-black/60 truncate">9 Feb 2024 - 10:24</p>
+                </div>
+              </div>
+              <p class="font-medium text-base leading-6 flex items-center gap-2 flex-shrink-0">
+                <span class="bg-red-500 text-white text-xs w-2 h-2 flex items-center justify-center rounded-full"></span>
+                <span class="text-black">674951</span>
+              </p>
+            </div>
+            <!-- (Repeat similar scrollable list items as in the original file) -->
+            <!-- ... -->
           </div>
         </div>
 
-        <!-- OTP LISTS (Repeated) -->
-       
-        <div
-        class="flex items-center justify-between sm:gap-2 px-0"
-        >
-          <div
-            class="flex flex-row items-center px-4 gap-1 w-[320px]"
-          >
-            <!-- Avatar -->
-            <div
-              class="w-10 h-10 rounded-full bg-[url('profile.png')] bg-cover bg-center flex-none"
-            ></div>
-            <!-- Text Info -->
-            <div class="flex flex-col flex-grow w-[164px] h-10">
-              <p
-                class="text-[16px] leading-6 font-medium text-black tracking-[-0.01em]"
-              >
-                Nasser Alsubai
-              </p>
-              <p
-                class="text-[13px] leading-4 font-normal text-black/60 tracking-[-0.01em]"
-              >
-                9 Feb 2020 - 20:24
+        <!-- OTP Details (Fixed, No Scroll) -->
+        <div class="flex-grow w-full md:w-1/2 h-auto rounded-md gap-2 lg:gap-0 md:px-5 border-l border-black/5 flex flex-col bg-white">
+          <button class="self-start text-black font-medium text-[16px] leading-5 tracking-[-0.01em] underline mt-8 mb-5 pl-7 md:pl-0">Close</button>
+          <div class="text-center space-y-10 mx-auto max-w-[600px] flex flex-col overflow-hidden">
+            <div class="space-y-0">
+              <div class="w-[120px] h-[120px] bg-black/5 rounded-full mx-auto overflow-hidden mb-2">
+                <img src="profile.png" alt="" class="w-full h-full object-cover">
+              </div>
+              <h3 class="text-[22px] font-semibold">Nasser Alsubai</h3>
+              <p class="text-black/60">ID: 296571905</p>
+            </div>
+            <div class="space-y-4">
+              <h1 class="text-[32px] font-bold text-[rgba(255,86,52,1)]">674951</h1>
+              <p class="text-black text-[16px]">
+                To accept cash transfers, the rider must enter this 4-digit code in their app before you can accept the transaction.
               </p>
             </div>
-            <!-- Red dot -->
-            <div class="w-2 h-2 bg-[#E10E0E] rounded-full flex-none"></div>
-            <!-- Code -->
-            <p
-              class="text-[16px] leading-6 font-medium text-black
-                     tracking-[-0.01em]"
-            >
-              674951
-            </p>
-          </div>
-        </div>
-
-       
-        
-        <div
-          class="flex items-center justify-between sm:gap-2 px-0"
-        >
-          <div
-            class="flex flex-row items-center px-4 gap-2 w-[320px] h-10"
-          >
-            <div
-              class="w-10 h-10 rounded-full bg-[url('profile.png')] bg-cover bg-center flex-none"
-            ></div>
-            <div class="flex flex-col flex-grow w-[240px] h-10">
-              <p
-                class="text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-              >
-                Nguyen Shane
-              </p>
-              <p
-                class="text-[13px] leading-4 font-normal text-black/60 tracking-[-0.01em]"
-              >
-                9 Feb 2020 - 20:24
-              </p>
+            <div class="space-y-0">
+              <p class="text-[16px]">The amount you should receive:</p>
+              <p class="text-[32px] leading-10 font-bold mb-4">$86.60</p>
+              <button class="bg-black/5 text-black/40 text-4 px-6 py-2 rounded-full cursor-pointer">Accept Cash Transfer</button>
             </div>
-           
           </div>
         </div>
-        <div
-          class="flex items-center justify-between sm:gap-2 px-0"
-        >
-          <div
-            class="flex flex-row items-center px-4 gap-2 w-[320px] h-10"
-          >
-            <div
-              class="w-10 h-10 rounded-full bg-[url('profile.png')] bg-cover bg-center flex-none"
-            ></div>
-            <div class="flex flex-col flex-grow w-[240px] h-10">
-              <p
-                class="text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-              >
-                Nguyen Shane
-              </p>
-              <p
-                class="text-[13px] leading-4 font-normal text-black/60 tracking-[-0.01em]"
-              >
-                9 Feb 2020 - 20:24
-              </p>
-            </div>
-            <!-- Code hidden in design? If so, omit or show conditionally -->
-          </div>
-        </div>
-        <div
-          class="flex items-center justify-between sm:gap-2 px-0"
-        >
-          <div
-            class="flex flex-row items-center px-4 gap-2 w-[320px] h-10"
-          >
-            <div
-              class="w-10 h-10 rounded-full bg-[url('profile.png')] bg-cover bg-center flex-none"
-            ></div>
-            <div class="flex flex-col flex-grow w-[240px] h-10">
-              <p
-                class="text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-              >
-                Nguyen Shane
-              </p>
-              <p
-                class="text-[13px] leading-4 font-normal text-black/60 tracking-[-0.01em]"
-              >
-                9 Feb 2020 - 20:24
-              </p>
-            </div>
-            <!-- Code hidden in design? If so, omit or show conditionally -->
-          </div>
-        </div>
-        <div
-          class="flex items-center justify-between sm:gap-2 px-0"
-        >
-          <div
-            class="flex flex-row items-center px-4 gap-2 w-[320px] h-10"
-          >
-            <div
-              class="w-10 h-10 rounded-full bg-[url('profile.png')] bg-cover bg-center flex-none"
-            ></div>
-            <div class="flex flex-col flex-grow w-[240px] h-10">
-              <p
-                class="text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-              >
-                Nguyen Shane
-              </p>
-              <p
-                class="text-[13px] leading-4 font-normal text-black/60 tracking-[-0.01em]"
-              >
-                9 Feb 2020 - 20:24
-              </p>
-            </div>
-            <!-- Code hidden in design? If so, omit or show conditionally -->
-          </div>
-        </div>
-        <div
-          class="flex items-center justify-between sm:gap-2 px-0"
-        >
-          <div
-            class="flex flex-row items-center px-4 gap-2 w-[320px] h-10"
-          >
-            <div
-              class="w-10 h-10 rounded-full bg-[url('profile.png')] bg-cover bg-center flex-none"
-            ></div>
-            <div class="flex flex-col flex-grow w-[240px] h-10">
-              <p
-                class="text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-              >
-                Nguyen Shane
-              </p>
-              <p
-                class="text-[13px] leading-4 font-normal text-black/60 tracking-[-0.01em]"
-              >
-                9 Feb 2020 - 20:24
-              </p>
-            </div>
-          
-          </div>
-        </div>
-
-      </div>
-    
-      
-    <div
-        class="relative justify-center items-center gap-10 p-0
-        w-[762px] h-[722px] bg-white border-l border-black/10
-        flex-grow isolate"
-      >
-      <button
-      class="absolute top-4 left-4 font-medium underline"
-    >
-      Close
-    </button>
-    <div class="flex flex-col justify-center items-center w-full h-full">
-    
-        <!-- Top Section: Big Avatar + Rider Info -->
-        <div
-          class="flex flex-col items-center gap-2 w-[602px] h-[176px] max-w-full"
-        >
-          <!-- Avatar -->
-          <div
-            class="w-[120px] h-[120px] rounded-full bg-[url('profile.png')] bg-cover bg-center"
-          ></div>
-          <!-- Name + ID -->
-          <div class="flex flex-col items-center w-full h-12">
-            <p
-              class="w-full h-6 text-center text-[22px] leading-6 font-bold tracking-[-0.01em]"
-            >
-              Nasser Alsubai
-            </p>
-            <p
-              class="w-full h-6 text-center text-[16px] leading-6 font-normal text-black/60 tracking-[-0.01em]"
-            >
-              ID: 296517905
-            </p>
-          </div>
-        </div>
-
-        <!-- OTP Number + Info -->
-        <div
-          class="flex flex-col items-center gap-4 w-[602px] h-[104px] max-w-full"
-        >
-          <!-- OTP Number -->
-          <div class="flex flex-col items-center w-full h-10">
-            <!-- If you want an optional hidden link above, add it with hidden class -->
-            <!-- <p class="hidden underline ...">Optional Link</p> -->
-            <p
-              class="w-full h-10 text-center text-[32px] leading-10 font-bold tracking-[-0.03em] text-[#FF5634]"
-            >
-              674951
-            </p>
-          </div>
-          <!-- Explanation -->
-          <p
-            class="w-full h-12 text-center text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-          >
-            To accept cash transfers, the rider must enter this 4-digit code in
-            their app before you can accept the transfer.
-          </p>
-        </div>
-
-        <!-- Amount + Button -->
-        <div
-          class="flex flex-col items-center gap-4 w-[602px] h-[128px] max-w-full"
-        >
-          <!-- Amount Info -->
-          <div class="flex flex-col items-start w-full h-16">
-            <p
-              class="w-full h-6 text-center text-[16px] leading-6 font-normal text-black tracking-[-0.01em]"
-            >
-              The amount you should receive:
-            </p>
-            <p
-              class="w-full h-10 text-center text-[32px] leading-10 font-bold text-black tracking-[-0.03em]"
-            >
-              $86.60
-            </p>
-          </div>
-          <!-- Accept Button -->
-          <button
-            class="inline-flex flex-row justify-center items-center gap-2 px-8 h-12
-                   bg-black/5 rounded-[32px] text-[16px] font-bold text-black/40
-                   tracking-[-0.01em]"
-          >
-            Accept Cash Transfer
-          </button>
-        </div>
-
-    </div>
-      
       </div>
     </div>
-  </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation (Visible on small screens) -->
+  <div class="md:w-auto md:h-auto h-15 gap-2 p-2 rounded-full bg-black text-white fixed bottom-3 left-1/2 transform -translate-x-1/2 p-3 rounded-full flex md:space-x-4 space-x-2 lg:hidden z-20 pointer-events-auto">
+    <div class="md:w-10 w-8 md:h-10 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+      <img src="1st.png" alt="menuItems">
+    </div>
+    <div class="md:w-10 w-8 md:h-10 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+      <img src="table.png" alt="menuItems">
+    </div>
+    <div class="md:w-10 w-8 md:h-10 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+      <img src="graph.png" alt="menuItems">
+    </div>
+    <div class="md:w-10 w-8 md:h-10 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+      <img src="active.png" alt="menuItems">
+    </div>
+    <div class="md:w-10 w-8 md:h-10 h-8 bg-gray-800 rounded-full flex items-center justify-center">
+      <img src="read.png" alt="menuItems">
+    </div>
+    <div class="md:w-10 w-8 md:h-10 h-8 bg-custom-bg3 rounded-full relative flex items-center justify-center">
+      <img src="exit.png" alt="menuItems">
+      <span class="absolute -top-1 -right-1 bg-custom-bg2 text-white w-4 h-4 min-w-4 gap-0 rounded-full pt-0 pr-1 pb-0 pl-1 border-2 border-black text-xs flex items-center justify-center">1</span>
+    </div>
+  </div>
+
+  <!-- Search JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchBtn = document.getElementById('searchBtn');
+      const headerSection = document.getElementById('headerSection');
+      const searchOverlay = document.getElementById('searchOverlay');
+      const searchCloseBtn = document.getElementById('searchCloseBtn');
+      // Toggle search overlay visibility
+      searchBtn.addEventListener('click', () => {
+        headerSection.classList.add('hidden');
+        searchOverlay.classList.remove('hidden');
+      });
+      searchCloseBtn.addEventListener('click', () => {
+        searchOverlay.classList.add('hidden');
+        headerSection.classList.remove('hidden');
+      });
+    });
+  </script>
+  
+  <!-- JS for scrolling effect on header -->
+  <script>
+    document.addEventListener('scroll', () => {
+      const element = document.getElementById('mainHeader');
+      if (window.scrollY > 0) {
+        element.classList.remove('bg-transparent');
+        element.classList.add('bg-white', 'rounded-2xl');
+      } else {
+        element.classList.remove('bg-white', 'rounded-2xl');
+        element.classList.add('bg-transparent');
+      }
+    });
+  </script>
 </body>
+
 </html>
