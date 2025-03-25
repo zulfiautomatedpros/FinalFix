@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Panels</title>
+  <meta name="description" content="Next.js 14+ starter template with app router, shadcn/ui, typesafe env, icons and configs setup." />
+  <meta name="author" content="redpangilinan" />
+  <meta name="keywords" content="Next.js,React,Tailwind CSS,Radix UI,shadcn/ui" />
+  <style>
+    /* Reset and base styles */
+    * { box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; }
+    
+    /* Container and layout */
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .main {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      padding: 16px;
+    }
+    
+    /* Left panel (hidden on small screens) */
+    .left-panel {
+      position: relative;
+      width: 25%;
+      min-width: 480px;
+      padding: 16px;
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .left-panel { display: block; }
+    }
+    .left-panel .bg-image {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://s3-alpha-sig.figma.com/img/97c5/77dd/b047dd3c09ed673e80bc7a6d07bed063?Expires=1741564800&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=c7G-LRN-ZdwgHk4t4mlU~hClSFddpnOcepvluPiXgTcbZIr4cklk1uAc0u19thuNi0K7VDoh1sBq3-95n6tPH~FeC~CImN7WrcaZ4y-pu20ghNlCPO3Jq3TqwvpkqoUMoCL6dBlVlsEAbtW9uYc7y~DEndkeI49yYvHRLaR2yMviluIhTLXU~gF5eKoXYi7ViyEzBsHYURfd3hZkHjxQRnItXeL31wN-jg6tGcCryGf5E9j9PYkc2al6fCykIokTj5HvSB~PmwtB0USacOVBNAk5KGDyvrm860fCeUlfwVsGckpecmJ4gHY62vZ4MejG2GPoiy~V79IN2oT0rC5D7A__');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+    .left-panel .gradient-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 50%, #000 100%);
+      opacity: 0.4;
+      z-index: 10;
+    }
+    /* A semi‐transparent overlay similar to “bg-signIn” */
+    .left-panel .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 5;
+    }
+    .left-panel .content {
+      position: relative;
+      z-index: 20;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+    }
+    .left-panel .content .logo img {
+      height: 40px;
+    }
+    .left-panel .content h1 {
+      font-size: 64px;
+      margin: 0 0 16px;
+    }
+    .left-panel .content p {
+      font-size: 16px;
+      line-height: 24px;
+      max-width: 400px;
+    }
+    
+    /* Mobile header (visible on small screens) */
+    .mobile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .mobile-header img {
+      width: auto;
+      max-width: 160px;
+      height: auto;
+    }
+    .mobile-header h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 8px 0 0;
+      color: #333;
+    }
+    
+    /* Right panel (login form) */
+    .right-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 360px;
+    }
+    .login-container .text-center h2 {
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0;
+      color: #333;
+      text-align: center;
+    }
+    .login-container .text-center p {
+      font-size: 16px;
+      color: #666;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .login-container form {
+      margin-top: 16px;
+    }
+    .login-container label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #666;
+      padding: 0 8px;
+    }
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+      width: 100%;
+      height: 48px;
+      padding: 8px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .login-container .input-group {
+      position: relative;
+    }
+    .login-container .input-group button {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .login-container .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .login-container .options .remember {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .login-container .options .remember .checkbox {
+      width: 28px;
+      height: 28px;
+      background: #e0e0e0;
+      margin-right: 8px;
+    }
+    .login-container .options a {
+      font-size: 16px;
+      font-weight: bold;
+      text-decoration: underline;
+      color: #333;
+      cursor: pointer;
+    }
+    .login-container button[type="submit"] {
+      width: 100%;
+      height: 48px;
+      border: none;
+      border-radius: 6px;
+      background: #333;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button[disabled] {
+      background: #ccc;
+      color: #888;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <main class="main">
+      <!-- Mobile header (visible on smaller screens) -->
+      <div class="mobile-header">
+        <img src="logo.svg" alt="Logo" />
+        <h2>Service Panel</h2>
+      </div>
+      
+      <!-- Left panel (only visible on larger screens) -->
+      <div class="left-panel">
+        <div class="bg-image"></div>
+        <div class="gradient-overlay"></div>
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="logo">
+            <img src="logo.png" alt="Logo" />
+          </div>
+          <div>
+            <h1>Service Panel</h1>
+            <p>Streamline your restaurant operations with BMS. Manage reservations, orders, inventory, and staff effortlessly, and focus on delivering exceptional dining experiences.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right panel with login form -->
+      <div class="right-panel">
+        <div class="login-container">
+          <div class="text-center">
+            <h2>Welcome Back</h2>
+            <p>Manage, streamline, and thrive effortlessly.</p>
+          </div>
+          <form>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="Enter email address" required>
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required autocomplete="new-password">
+                <button type="button">
+                  <img src="eye.svg" alt="Show password" width="24" height="24">
+                </button>
+              </div>
+            </div>
+            <div class="options">
+              <div class="remember">
+                <div class="checkbox"></div>
+                <span>Remember me</span>
+              </div>
+              <a href="#">Login with Code</a>
+            </div>
+            <button type="submit" disabled>Sign In</button>
+          </form>
+        </div>
+      </div>
+      
+    </main>
+  </div>
+</body>
+</html>

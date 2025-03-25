@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Box-Sizing Demo</title>
+  <link href="./output.css" rel="stylesheet">
+</head>
+<body class="font-sans bg-[#f4f4f4] p-5 m-0 text-center">
+  <h1 class="mb-5">Box-Sizing: border-box vs content-box</h1>
+  <div class="w-[300px] my-5 mx-auto p-5 border-4 border-[#3498db] bg-white text-base leading-6 box-border">
+    <p>This box uses <code>box-sizing: border-box;</code></p>
+  </div>
+  <div class="w-[300px] my-5 mx-auto p-5 border-4 border-[#3498db] bg-white text-base leading-6 box-content">
+    <p>This box uses the default <code>box-sizing: content-box;</code></p>
+  </div>
+  <p class="mt-5 text-sm text-[#555]">
+    Notice how with <code>border-box</code> the total width remains constant even after adding padding and border, whereas with <code>content-box</code> the element's size increases.
+  </p>
+</body>
+</html>
